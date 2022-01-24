@@ -1,13 +1,13 @@
 package com.pb.pbcad;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class PbcadController {
 
-    @RequestMapping
+    @RequestMapping("/")
     public String Test()
     {
-        return "teststring!";
+        return "index";
     }
 }
