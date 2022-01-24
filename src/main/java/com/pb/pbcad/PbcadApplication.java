@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PbcadApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PbcadApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PbcadApplication.class, args);
+    }
 
 }
