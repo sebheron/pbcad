@@ -46,7 +46,7 @@
             <artifactId>vpr</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/virtualparts.jar</systemPath>
+            <systemPath>${project.basedir}/lib/virtual-parts.jar</systemPath>
             <type>jar</type>
         </dependency>
 
