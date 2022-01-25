@@ -23,11 +23,11 @@
 
 * {
     margin: 0;
-    transition: background-color 200ms;
 }
 
 body {
     background-color: var(--page-bg-color);
+    transition: background-color 200ms, color 200ms, box-shadow 200ms, background-color 200ms;
 }
 
 .title-bar {
@@ -43,7 +43,6 @@ body {
 
 .icon-buttons {
     color: var(--page-icon-color-u);
-    transition: color 100ms;
     cursor: pointer;
 }
 
@@ -79,7 +78,6 @@ body {
     padding: 10px;
     width: 50vw;
     box-shadow: var(--tb-shadow-color) 0 0 3px;
-    transition: box-shadow 200ms;
     outline: none;
     background-color: var(--tb-background-color);
 }
@@ -102,7 +100,6 @@ body {
     border: var(--title-cad-color) 2px solid;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 200ms;
     color: var(--b-color);
 }
 
