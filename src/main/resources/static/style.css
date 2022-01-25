@@ -23,11 +23,11 @@
 
 * {
     margin: 0;
+    transition: background-color 200ms, color 200ms, box-shadow 200ms, background-color 200ms;
 }
 
 body {
     background-color: var(--page-bg-color);
-    transition: background-color 200ms, color 200ms, box-shadow 200ms, background-color 200ms;
 }
 
 .title-bar {
