@@ -35,6 +35,7 @@ function switchDarkMode() {
 function start() {
     enableDarkMode(window.localStorage.getItem('pbcad-darkmode') === 'true');
     darkmode_button.addEventListener("click", switchDarkMode);
+    document.body.classList.remove('preload')
 }
 
 document.addEventListener("DOMContentLoaded", start, false);

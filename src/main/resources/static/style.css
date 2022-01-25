@@ -30,6 +30,13 @@ body {
     background-color: var(--page-bg-color);
 }
 
+.preload {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+}
+
 .title-bar {
     height: 7vh;
     box-shadow: var(--page-shadow) 0 5px 20px;
