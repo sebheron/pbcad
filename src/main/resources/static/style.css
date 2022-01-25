@@ -1,0 +1,160 @@
+:root {
+    --page-bg-color: #0f0905;
+    --page-shadow: black;
+    --page-icon-color-u: darkcyan;
+    --page-icon-color-h: darkgrey;
+    --page-output-color: mintcream;
+    --page-output-bg: #202024;
+    --page-output-border: #606060;
+
+    --title-pb-color: darkred;
+    --title-cad-color: slateblue;
+
+    --tb-background-color: black;
+    --tb-focus-color: cornflowerblue;
+    --tb-shadow-color: mediumvioletred;
+    --tb-placeholder-color: lightgrey;
+
+    --b-bg-color: lightblue;
+    --b-bg-active-color: steelblue;
+    --b-color: white;
+    --b-shadow-color: blueviolet;
+}
+
+* {
+    margin: 0;
+    transition: background-color 200ms;
+}
+
+body {
+    background-color: var(--page-bg-color);
+}
+
+.title-bar {
+    height: 7vh;
+    box-shadow: var(--page-shadow) 0 5px 20px;
+    line-height: 7vh;
+    text-align: center;
+}
+
+.title-icons {
+    font-size: 4vh;
+}
+
+.icon-buttons {
+    color: var(--page-icon-color-u);
+    transition: color 100ms;
+    cursor: pointer;
+}
+
+.icon-buttons:hover {
+    color: var(--page-icon-color-h);
+}
+
+.title-container {
+    margin-top: 5vh;
+    text-align: center;
+    font-size: 5vh;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.title-pb {
+    color: var(--title-pb-color);
+}
+
+.title-cad {
+    color: var(--title-cad-color);
+}
+
+.text-box-container {
+    margin-top: 2vh;
+    text-align: center;
+    font-size: 45px;
+}
+
+.text-box {
+    display: inline-block;
+    border: var(--title-cad-color) 2px solid;
+    border-radius: 5px;
+    padding: 10px;
+    width: 50vw;
+    box-shadow: var(--tb-shadow-color) 0 0 3px;
+    transition: box-shadow 200ms;
+    outline: none;
+    background-color: var(--tb-background-color);
+}
+
+.text-box:focus {
+    box-shadow: var(--tb-focus-color) 0 0 5px;
+}
+
+.text-box::placeholder {
+    font-style: italic;
+}
+
+.run-button {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: var(--page-bg-color);
+    box-shadow: var(--b-shadow-color) 0 0 3px;
+    outline: none;
+    border: var(--title-cad-color) 2px solid;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 200ms;
+    color: var(--b-color);
+}
+
+.run-button:hover {
+    background-color: var(--b-bg-color);
+}
+
+.run-button:active {
+    background-color: var(--b-bg-active-color);
+}
+
+.output-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.output-text {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--page-output-color);
+    background-color: var(--page-output-bg);
+    display: inline-block;
+    width: 53.5vw;
+    border: var(--page-output-border) 2px solid;
+    border-radius: 5px;
+    text-align: left;
+    padding: 10px;
+    min-height: 40vh;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+@media only screen and (max-width: 700px) {
+    .title-bar {
+        height: 9vh;
+        line-height: 9vh;
+    }
+    .title-icons {
+        font-size: 7vh;
+    }
+    .text-box {
+        width: 70vw;
+    }
+    .output-text {
+        width: 85vw;
+        min-height: 50vh;
+    }
+}
