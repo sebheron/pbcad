@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PbcadController {
 
     @RequestMapping("/")
-    public String Home()
+    public String Test()
     {
-        //model.addAttribute("consoleOutput", "This is the console output!");
         return "index";
     }
 }
