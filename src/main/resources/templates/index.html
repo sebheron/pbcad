@@ -21,8 +21,10 @@
     <h1><span class="title-pb">pb</span><span class="title-cad">CAD</span></h1>
 </div>
 <div class="text-box-container">
-    <input placeholder="Enter a description for a genetic circuit..." class="text-box"/>
-    <button class="run-button"><i class="fas fa-dna"></i></button>
+    <form method="get">
+        <input name="ds" id="input-box" th:text="${ds}" placeholder="Enter a description for a genetic circuit..." class="text-box"/>
+        <button type="submit" id="run-button" class="run-button"><i class="fas fa-dna"></i></button>
+    </form>
 </div>
 <div class="output-container">
     <div class="output-text">
