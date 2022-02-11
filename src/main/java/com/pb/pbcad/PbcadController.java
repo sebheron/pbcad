@@ -9,7 +9,7 @@ public class PbcadController {
     @GetMapping("/")
     public String Test(Model model)
     {
-        model.addAttribute("consoleLog", "CONSOLE LOG INFORMATION");
+        model.addAttribute("log", "CONSOLE LOG INFORMATION");
         return "index";
     }
 }
