@@ -87,6 +87,7 @@ body {
     box-shadow: var(--tb-shadow-color) 0 0 3px;
     outline: none;
     background-color: var(--tb-background-color);
+    color: var(--b-color);
 }
 
 .text-box:focus {
