@@ -10,8 +10,9 @@ public class PbcadController {
 
     private final PbcadService pbcadService;
 
-    public PbcadController() {
-        this.pbcadService = new PbcadService();
+    @Autowired
+    public PbcadController(PbcadService pbcadService) {
+        this.pbcadService = pbcadService;
     }
 
     @GetMapping("/")

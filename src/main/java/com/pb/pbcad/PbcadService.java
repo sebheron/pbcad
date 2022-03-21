@@ -4,6 +4,7 @@ import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLWriter;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
+import org.springframework.stereotype.Repository;
 import org.virtualparts.VPRException;
 import org.virtualparts.sbol.SVPWriteHandler;
 import org.virtualparts.ws.client.VPRWebServiceClient;
@@ -11,11 +12,11 @@ import org.virtualparts.ws.client.VPRWebServiceClient;
 import javax.ws.rs.client.WebTarget;
 import javax.xml.stream.XMLStreamException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@Repository
 public class PbcadService {
     public String InterpretDisplayString(String displayString) {
         if (displayString.equals("")) return "Output";
