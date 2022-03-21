@@ -24,7 +24,7 @@ public class PbcadService {
 
         try {
             SBOLDocument sbolDesign = SVPWriteHandler.convertToSBOL(displayString, "tu");
-            WebTarget target = VPRWebServiceClient.getVPRWebServiceTarget("https://virtualparts.org/virtualparts-ws/webapi/model/svpwrite");
+            WebTarget target = VPRWebServiceClient.getVPRWebServiceTarget("https://virtualparts.org/rdf4j-server/repositories/vpr28");
             SBMLDocument sbmlDoc = VPRWebServiceClient.getModel(target, sbolDesign);
             SBMLWriter.write(sbmlDoc, "cad.xml", ' ', (short) 2);
             return Files.readString(Path.of("cad.xml"));
