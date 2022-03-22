@@ -17,8 +17,9 @@ public class PbcadController {
     }
 
     @GetMapping("/")
-    public String Test(@RequestParam(name="ds", required=false, defaultValue="") String ds, Model model)
+    public String RunSim(@RequestParam(name="ds", required=false, defaultValue="") String ds, Model model)
     {
+        System.out.println(ds);
         model.addAttribute("ds", ds);
         model.addAttribute("log", this.pbcadService.InterpretDisplayString(ds));
         return "index";
