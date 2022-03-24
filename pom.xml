@@ -47,7 +47,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.virtualparts</groupId>
+            <groupId>org.virtualparts</groupId>
             <artifactId>vpr</artifactId>
             <version>1.0</version>
             <scope>system</scope>
