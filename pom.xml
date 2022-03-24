@@ -51,7 +51,7 @@
             <artifactId>vpr</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/virtual-parts.jar</systemPath>
+            <systemPath>${project.basedir}/lib/virtualparts-ws-client-2.8-jar-with-dependencies.jar</systemPath>
             <type>jar</type>
         </dependency>
 
