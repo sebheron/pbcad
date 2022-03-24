@@ -16,6 +16,13 @@
     <properties>
         <java.version>11</java.version>
     </properties>
+    <repositories>
+        <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -49,10 +56,13 @@
         <dependency>
             <groupId>org.virtualparts</groupId>
             <artifactId>vpr</artifactId>
+            <version>2.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.copasi</groupId>
+            <artifactId>copasi</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/virtualparts-ws-client-2.8-jar-with-dependencies.jar</systemPath>
-            <type>jar</type>
         </dependency>
 
         <dependency>
