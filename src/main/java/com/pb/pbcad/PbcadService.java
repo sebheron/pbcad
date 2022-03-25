@@ -25,12 +25,15 @@ public class PbcadService {
         try {
             SBOLDocument sbolDesign = SVPWriteHandler.convertToSBOL(displayString, "tu");
 
-            sbolDesign.createComponentDefinition("yo", ComponentDefinition.PROTEIN);
+            //sbolDesign.createComponentDefinition("pp", ComponentDefinition.PROTEIN);
 
             WebTarget target = VPRWebServiceClient.getVPRWebServiceTarget("http://virtualparts.org/virtualparts-ws/webapi");
             SBMLDocument sbmlDoc = VPRWebServiceClient.getModel(target, sbolDesign);
             SBMLWriter.write(sbmlDoc, "cad.xml", ' ', (short) 2);
-            return this.RunSimulation();
+            String output = this.RunSimulation();
+            Files.deleteIfExists(Path.of("cad.xml"));
+            Files.deleteIfExists(Path.of("report.txt"));
+            return output;
         }
         catch (SBOLValidationException e) {
             return "Error occurred with SBOL validation, check design string.";
@@ -75,7 +78,7 @@ public class PbcadService {
             parameter.setDblValue(1.0e-12);
 
             if (trajectoryTask.processWithOutputFlags(true, (int)CCopasiTask.OUTPUT_UI)) {
-                return Files.readString(Path.of("cad.xml"));
+                return Files.readString(Path.of("report.txt"));
             }
             else {
                 return "Error occured collecting results for simulation";
