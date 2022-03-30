@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PbcadController {
 
-    private final PbcadService pbcadService;
+    private final ParsingService parsingService;
 
     @Autowired
-    public PbcadController(PbcadService pbcadService) {
-        this.pbcadService = pbcadService;
+    public PbcadController(ParsingService parsingService) {
+        this.parsingService = parsingService;
     }
 
     @GetMapping("/")
     public String RunSim(@RequestParam(name="ds", required=false, defaultValue="") String ds, Model model)
     {
         model.addAttribute("ds", ds);
-        model.addAttribute("log", this.pbcadService.InterpretDisplayString(ds));
+        model.addAttribute("log", this.parsingService.InterpretDisplayString(ds));
         return "index";
     }
 }

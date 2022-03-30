@@ -3,12 +3,10 @@ package com.pb.pbcad;
 import org.COPASI.*;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLWriter;
-import org.sbolstandard.core2.ComponentDefinition;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
 import org.springframework.stereotype.Repository;
 import org.virtualparts.VPRException;
-import org.virtualparts.sbol.SVPWriteHandler;
 import org.virtualparts.ws.client.VPRWebServiceClient;
 
 import javax.ws.rs.client.WebTarget;
@@ -19,15 +17,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Repository
-public class PbcadService {
+public class ParsingService {
+
+    private WebTarget target;
+    private VPRObject parsingObject;
+
+    public ParsingService() {
+        target = VPRWebServiceClient.getVPRWebServiceTarget("http://virtualparts.org/virtualparts-ws/webapi");
+        parsingObject = new VPRObject();
+    }
+
     public String InterpretDisplayString(String displayString) {
         if (displayString.equals("")) return "Output";
         try {
-            SBOLDocument sbolDesign = SVPWriteHandler.convertToSBOL(displayString, "tu");
-
-            //sbolDesign.createComponentDefinition("pp", ComponentDefinition.PROTEIN);
-
-            WebTarget target = VPRWebServiceClient.getVPRWebServiceTarget("http://virtualparts.org/virtualparts-ws/webapi");
+            SBOLDocument sbolDesign = parsingObject.Parse(displayString);
             SBMLDocument sbmlDoc = VPRWebServiceClient.getModel(target, sbolDesign);
             SBMLWriter.write(sbmlDoc, "cad.xml", ' ', (short) 2);
             String output = this.RunSimulation();
@@ -46,6 +49,9 @@ public class PbcadService {
         }
         catch (IOException e) {
             return "SBML File error occurred.";
+        }
+        catch (PBSyntaxException e) {
+            return e.getMessage();
         }
     }
 
@@ -80,9 +86,7 @@ public class PbcadService {
             if (trajectoryTask.processWithOutputFlags(true, (int)CCopasiTask.OUTPUT_UI)) {
                 return Files.readString(Path.of("report.txt"));
             }
-            else {
-                return "Error occured collecting results for simulation";
-            }
+            return "Error occured collecting results for simulation";
         }
         catch (Exception ex)
         {

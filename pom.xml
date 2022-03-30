@@ -63,12 +63,6 @@
             <systemPath>${project.basedir}/lib/copasi.jar</systemPath>
             <type>jar</type>
         </dependency>
-
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr4-runtime</artifactId>
-            <version>4.9.3</version>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
