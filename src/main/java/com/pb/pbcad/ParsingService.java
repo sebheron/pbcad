@@ -90,7 +90,7 @@ public class ParsingService {
         }
         catch (Exception ex)
         {
-            return "Error occured running simulation.";
+            return "Error occured with COPASI when running the simulation. It's likely the design string entered is incorrectly setup.";
         }
     }
 
