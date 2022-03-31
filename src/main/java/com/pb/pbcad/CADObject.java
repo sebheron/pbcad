@@ -113,7 +113,7 @@ public class CADObject {
                 String type = entry.getKey();
                 switch (type) {
                     case "prot":
-                        document.createComponentDefinition(entry.getValue(), ComponentDefinition.PROTEIN);
+                        document.createComponentDefinition(entry.getValue(), "1", ComponentDefinition.PROTEIN);
                         break;
                 }
             }
@@ -246,7 +246,7 @@ public class CADObject {
     Called to determine whether the name for the component defined is unused and able to be used.
      */
     private void buildNameExistsException(String name) throws PBSyntaxException {
-        if (!this.Components.containsKey(name)) {
+        if (!this.Components.containsValue(name)) {
             throw new PBSyntaxException("Component NAME does not exist in scope.");
         }
     }
