@@ -7,11 +7,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class PbcadApplicationTests {
 
-    private VPRObject parsingObject;
+    private CADObject parsingObject;
 
     @BeforeAll
     void setup() {
-        parsingObject = new VPRObject();
+        parsingObject = new CADObject();
     }
 
     @Test

@@ -20,11 +20,11 @@ import java.nio.file.Path;
 public class ParsingService {
 
     private WebTarget target;
-    private VPRObject parsingObject;
+    private CADObject parsingObject;
 
     public ParsingService() {
         target = VPRWebServiceClient.getVPRWebServiceTarget("http://virtualparts.org/virtualparts-ws/webapi");
-        parsingObject = new VPRObject();
+        parsingObject = new CADObject();
     }
 
     public String InterpretDisplayString(String displayString) {

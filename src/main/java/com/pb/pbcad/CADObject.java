@@ -1,13 +1,14 @@
 package com.pb.pbcad;
 
+import org.apache.commons.lang3.StringUtils;
 import org.sbolstandard.core2.*;
 import org.virtualparts.*;
 import org.virtualparts.sbol.*;
 
 import java.util.*;
 
-public class VPRObject {
-    private static Set<String> ComponentTypes = Set.of(
+public class CADObject {
+    private static final Set<String> ComponentTypes = Set.of(
             "prom",
             "rbs",
             "cds",
@@ -17,7 +18,11 @@ public class VPRObject {
             "eng"
     );
 
-    private static Set<String> InteractionTypes = Set.of(
+    private static final Set<String> AdditionalComponentTypes = Set.of(
+            "prot"
+    );
+
+    private static final Set<String> InteractionTypes = Set.of(
             "$rep",
             "$act",
             "$trans",
@@ -27,10 +32,10 @@ public class VPRObject {
             "$dephos"
     );
 
-    private Map<String, String> Components;
-    private Map<String, List<String>> Interactions;
+    private final Map<String, String> Components;
+    private final Map<String, List<String>> Interactions;
 
-    public VPRObject() {
+    public CADObject() {
         this.Components = new LinkedHashMap<>();
         this.Interactions = new LinkedHashMap<>();
     }
@@ -40,7 +45,14 @@ public class VPRObject {
         this.Interactions.clear();
         addInformation(designString);
         SBOLDocument document = SVPWriteHandler.convertToSBOL(getVPRDesignString(), "pbcad");
-        if (this.Interactions.size() <= 0) return document;
+        document = createAdditionalComponents(document);
+        if (this.Interactions.size() > 0) {
+            document = createInteractions(document);
+        }
+        return document;
+    }
+
+    private SBOLDocument createInteractions(SBOLDocument document) throws PBSyntaxException, SBOLValidationException {
         ModuleDefinition moduleDef = document.createModuleDefinition("design_module");
         for (Map.Entry<String, List<String>> entry : this.Interactions.entrySet()) {
             String type = entry.getKey();
@@ -50,27 +62,42 @@ public class VPRObject {
                 definitions.add(document.getComponentDefinition(val, "1"));
             }
             try {
-                if (type == "$rep") {
-                    if (definitions.size() > 2) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createPromoterRepression(moduleDef, definitions.get(0), definitions.get(1));
-                } else if (type == "$act") {
-                    if (definitions.size() > 2) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createPromoterInduction(moduleDef, definitions.get(0), definitions.get(1));
-                } else if (type == "$trans") {
-                    if (definitions.size() > 2) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createTranslationInteraction(moduleDef, definitions.get(0), definitions.get(1));
-                } else if (type == "$blind") {
-                    if (definitions.size() > 3) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createDNABinding(moduleDef, definitions.get(0), definitions.get(1), definitions.get(2));
-                } else if (type == "$form") {
-                    if (definitions.size() > 3) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createComplexFormation(moduleDef, definitions.get(0), definitions.get(1), definitions.get(2));
-                } else if (type == "$phos") {
-                    if (definitions.size() > 2) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createPhosphorylationInteraction(moduleDef, definitions.get(0), definitions.get(1));
-                } else if (type == "$dephos") {
-                    if (definitions.size() > 1) throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
-                    SBOLInteraction.createAutoDephosphorylationInteraction(moduleDef, definitions.get(0));
+                switch (type) {
+                    case "$rep":
+                        if (definitions.size() > 2)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createPromoterRepression(moduleDef, definitions.get(0), definitions.get(1));
+                        break;
+                    case "$act":
+                        if (definitions.size() > 2)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createPromoterInduction(moduleDef, definitions.get(0), definitions.get(1));
+                        break;
+                    case "$trans":
+                        if (definitions.size() > 2)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createTranslationInteraction(moduleDef, definitions.get(0), definitions.get(1));
+                        break;
+                    case "$blind":
+                        if (definitions.size() > 3)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createDNABinding(moduleDef, definitions.get(0), definitions.get(1), definitions.get(2));
+                        break;
+                    case "$form":
+                        if (definitions.size() > 3)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createComplexFormation(moduleDef, definitions.get(0), definitions.get(1), definitions.get(2));
+                        break;
+                    case "$phos":
+                        if (definitions.size() > 2)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createPhosphorylationInteraction(moduleDef, definitions.get(0), definitions.get(1));
+                        break;
+                    case "$dephos":
+                        if (definitions.size() > 1)
+                            throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
+                        SBOLInteraction.createAutoDephosphorylationInteraction(moduleDef, definitions.get(0));
+                        break;
                 }
             }
             catch (IndexOutOfBoundsException e) {
@@ -80,17 +107,34 @@ public class VPRObject {
         return document;
     }
 
-    private String getVPRDesignString() {
+    private SBOLDocument createAdditionalComponents(SBOLDocument document) throws SBOLValidationException {
+        for (Map.Entry<String, String> entry : this.Components.entrySet()) {
+            if (CADObject.AdditionalComponentTypes.contains(entry.getKey())) {
+                String type = entry.getKey();
+                switch (type) {
+                    case "prot":
+                        document.createComponentDefinition(entry.getValue(), ComponentDefinition.PROTEIN);
+                        break;
+                }
+            }
+        }
+        return document;
+    }
+
+    private String getVPRDesignString() throws PBSyntaxException {
         int i = 0;
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, String> entry : this.Components.entrySet()) {
-            builder.append(entry.getValue() + ":" + entry.getKey());
-            if (i < this.Components.size() - 1) {
+            if (CADObject.ComponentTypes.contains(entry.getKey())) {
+                builder.append(entry.getValue());
+                builder.append(":");
+                builder.append(entry.getKey());
                 builder.append(";");
+                i++;
             }
-            i++;
         }
-        return builder.toString();
+        if (i <= 0) throw new PBSyntaxException("Protein components have been added, but no DNA components have been added.");
+        return StringUtils.removeEnd(builder.toString(), ";");
     }
 
     private void addInformation(String designString) throws PBSyntaxException {
@@ -166,7 +210,8 @@ public class VPRObject {
     Called to determine whether the component type exists and is correct.
      */
     private void buildTypeException(String type) throws PBSyntaxException {
-        if (!VPRObject.ComponentTypes.contains(type.toLowerCase())) {
+        if (!CADObject.ComponentTypes.contains(type.toLowerCase())
+        && !CADObject.AdditionalComponentTypes.contains(type.toLowerCase())) {
             throw new PBSyntaxException("Unrecognised component TYPE in component declaration.");
         }
     }
@@ -176,7 +221,7 @@ public class VPRObject {
     Called to determine whether the interaction type exists and is correct.
      */
     private void buildInteractException(String interaction) throws PBSyntaxException {
-        if (!VPRObject.InteractionTypes.contains(interaction.toLowerCase())) {
+        if (!CADObject.InteractionTypes.contains(interaction.toLowerCase())) {
             throw new PBSyntaxException("Unrecognised interaction TYPE in component declaration.");
         }
     }
@@ -190,7 +235,8 @@ public class VPRObject {
         if (this.Components.containsKey(name)) {
             throw new PBSyntaxException("Component NAME is already defined in scope.");
         }
-        if (VPRObject.ComponentTypes.contains(name) || VPRObject.InteractionTypes.contains(name)) {
+        if (CADObject.ComponentTypes.contains(name) || CADObject.InteractionTypes.contains(name)
+        || CADObject.AdditionalComponentTypes.contains(name)) {
             throw new PBSyntaxException("Component NAME cannot be the same as a predefined TYPE.");
         }
     }
