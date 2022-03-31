@@ -49,4 +49,9 @@ class PbcadApplicationTests {
     @Test
     void VPRWikiExample3Test() {
     }
+
+    /*
+    Need to build a large test catalogue.
+    Aim for 20 tests. No stragglers just meaningful tests.
+     */
 }
