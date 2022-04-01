@@ -43,7 +43,7 @@ public class CADObject {
     public SBOLDocument Parse(String designString) throws PBSyntaxException, SBOLValidationException, VPRException {
         this.Components.clear();
         this.Interactions.clear();
-        addInformation(designString);
+        addInformation(designString.replaceAll("\\s{2,}", " ").trim());
         SBOLDocument document = SVPWriteHandler.convertToSBOL(getVPRDesignString(), "pbcad");
         document = createAdditionalComponents(document);
         if (this.Interactions.size() > 0) {
@@ -62,7 +62,7 @@ public class CADObject {
                 definitions.add(document.getComponentDefinition(val, "1"));
             }
             try {
-                switch (type) {
+                switch (type.toLowerCase()) {
                     case "$rep":
                         if (definitions.size() > 2)
                             throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
@@ -111,7 +111,7 @@ public class CADObject {
         for (Map.Entry<String, String> entry : this.Components.entrySet()) {
             if (CADObject.AdditionalComponentTypes.contains(entry.getKey())) {
                 String type = entry.getKey();
-                switch (type) {
+                switch (type.toLowerCase()) {
                     case "prot":
                         document.createComponentDefinition(entry.getValue(), "1", ComponentDefinition.PROTEIN);
                         break;
@@ -128,7 +128,7 @@ public class CADObject {
             if (CADObject.ComponentTypes.contains(entry.getKey())) {
                 builder.append(entry.getValue());
                 builder.append(":");
-                builder.append(entry.getKey());
+                builder.append(entry.getKey().toLowerCase());
                 builder.append(";");
                 i++;
             }
