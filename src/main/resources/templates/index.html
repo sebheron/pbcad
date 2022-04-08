@@ -29,13 +29,15 @@
             <option value="sbol">SBOL</option>
         </select>
         <button type="submit" id="run-button" class="run-button"><i class="fas fa-dna"></i></button>
+        <button type="button" id="copy-button" class="run-button"><i class="fa-solid fa-copy"></i></button>
     </form>
 </div>
 <div class="output-container">
     <div class="output-text">
-        <p th:text="${log}" />
+        <p id="console" th:text="${log}" />
     </div>
 </div>
 <script src="darkmode.js"></script>
+<script src="copytoclipboard.js"></script>
 </body>
 </html>
