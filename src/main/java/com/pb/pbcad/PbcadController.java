@@ -17,10 +17,11 @@ public class PbcadController {
     }
 
     @GetMapping("/")
-    public String RunSim(@RequestParam(name="ds", required=false, defaultValue="") String ds, Model model)
+    public String RunSim(@RequestParam(name="ds", required=false, defaultValue="") String ds,
+            @RequestParam(name="type", required = false, defaultValue = "") String type, Model model)
     {
         model.addAttribute("ds", ds);
-        model.addAttribute("log", this.parsingService.InterpretDisplayString(ds));
+        model.addAttribute("log", this.parsingService.InterpretDisplayString(ds, type));
         return "index";
     }
 }

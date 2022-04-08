@@ -90,6 +90,17 @@ body {
     color: var(--b-color);
 }
 
+.combo-box {
+    display: inline-block;
+    border: var(--title-cad-color) 2px solid;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: var(--tb-shadow-color) 0 0 3px;
+    outline: none;
+    background-color: var(--tb-background-color);
+    color: var(--b-color);
+}
+
 .text-box:focus {
     box-shadow: var(--tb-focus-color) 0 0 5px;
 }

@@ -3,8 +3,10 @@ package com.pb.pbcad;
 import org.COPASI.*;
 import org.sbml.jsbml.SBMLDocument;
 import org.sbml.jsbml.SBMLWriter;
+import org.sbolstandard.core2.SBOLConversionException;
 import org.sbolstandard.core2.SBOLDocument;
 import org.sbolstandard.core2.SBOLValidationException;
+import org.sbolstandard.core2.SBOLWriter;
 import org.springframework.stereotype.Repository;
 import org.virtualparts.VPRException;
 import org.virtualparts.ws.client.VPRWebServiceClient;
@@ -27,32 +29,45 @@ public class ParsingService {
         parsingObject = new CADObject();
     }
 
-    public String InterpretDisplayString(String displayString) {
-        if (displayString.equals("")) return "Output";
+    public String InterpretDisplayString(String displayString, String runType) {
+        String output = "Output";
+        if (displayString.equals("") || runType.equals("")) return output;
         try {
             SBOLDocument sbolDesign = parsingObject.Parse(displayString);
-            SBMLDocument sbmlDoc = VPRWebServiceClient.getModel(target, sbolDesign);
-            SBMLWriter.write(sbmlDoc, "cad.xml", ' ', (short) 2);
-            String output = this.RunSimulation();
-            Files.deleteIfExists(Path.of("cad.xml"));
-            Files.deleteIfExists(Path.of("report.txt"));
-            return output;
+            if (!runType.equals("sbol")) {
+                SBMLDocument sbmlDoc = VPRWebServiceClient.getModel(target, sbolDesign);
+                SBMLWriter.write(sbmlDoc, "sbml.xml", ' ', (short) 2);
+            }
+            else {
+                SBOLWriter.write(sbolDesign, "sbol.xml");
+                output = Files.readString(Path.of("sbol.xml"));
+            }
+            if (runType.equals("sbml")) {
+                output = Files.readString(Path.of("sbml.xml"));
+            }
+            else if (runType.equals("sim")) {
+                output = this.RunSimulation();
+            }
         }
         catch (SBOLValidationException e) {
-            return "Error occurred with SBOL validation, check design string.";
+            output = "Error occurred with SBOL validation, check design string.";
         }
         catch (VPRException e) {
-            return "Error occurred with VPR, check design string.";
+            output = "Error occurred with VPR, check design string.";
         }
         catch (XMLStreamException e) {
-            return "Error occurred with VPR in SBOL to SBML conversion.";
+            output = "Error occurred with VPR in SBOL to SBML conversion.";
         }
         catch (IOException e) {
-            return "SBML File error occurred.";
+            output = "SBML File error occurred.";
         }
         catch (PBSyntaxException e) {
-            return e.getMessage();
+            output = e.getMessage();
         }
+        catch (SBOLConversionException e) {
+            output = "SBOL File error occured.";
+        }
+        return output;
     }
 
     private String RunSimulation()
@@ -60,7 +75,7 @@ public class ParsingService {
         CDataModel dataModel = CRootContainer.addDatamodel();
         try
         {
-            dataModel.importSBML("cad.xml");
+            dataModel.importSBML("sbml.xml");
             CModel model = dataModel.getModel();
             CReportDefinitionVector reports = dataModel.getReportDefinitionList();
             CReportDefinition report = CreateReportDef(model, reports);

@@ -23,6 +23,11 @@
 <div class="text-box-container">
     <form method="get">
         <input name="ds" id="input-box" th:value="${ds}" placeholder="Enter a pbcad design string for a genetic circuit..." class="text-box"/>
+        <select name="type" id="type-combobox" class="combo-box">
+            <option value="sim">Simulate</option>
+            <option value="sbml">SBML</option>
+            <option value="sbol">SBOL</option>
+        </select>
         <button type="submit" id="run-button" class="run-button"><i class="fas fa-dna"></i></button>
     </form>
 </div>
