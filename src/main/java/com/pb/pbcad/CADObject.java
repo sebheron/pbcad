@@ -78,7 +78,7 @@ public class CADObject {
                             throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
                         SBOLInteraction.createTranslationInteraction(moduleDef, definitions.get(0), definitions.get(1));
                         break;
-                    case "$blind":
+                    case "$bind":
                         if (definitions.size() > 3)
                             throw new PBSyntaxException("Too many component NAMES specified in interaction definition.");
                         SBOLInteraction.createDNABinding(moduleDef, definitions.get(0), definitions.get(1), definitions.get(2));
