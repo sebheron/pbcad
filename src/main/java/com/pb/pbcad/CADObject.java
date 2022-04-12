@@ -148,7 +148,7 @@ public class CADObject {
         //Loop through firstly to add each component.
         for (String component : components) {
             if (component.equals("")) continue;
-            if (!component.contains("$")) addComponent(component);
+            if (!component.startsWith("$")) addComponent(component);
         }
         //Loop through secondly to add each interaction.
         for (String component : components) {
