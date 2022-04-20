@@ -24,7 +24,7 @@ public class CADObject {
 
     private static final Set<String> InteractionTypes = Set.of(
             "$rep",
-            "$act",
+            "$ind",
             "$trans",
             "$bind",
             "$form",
